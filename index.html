@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خطة المذاكرة الأسبوعية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-item {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+            padding-right: 3rem;
+            margin-bottom: 1rem;
+        }
+        .flow-line {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            bottom: -15px;
+            width: 2px;
+            background-color: #118AB2;
+        }
+        .flow-item:last-child .flow-line {
+            display: none;
+        }
+        .flow-dot {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 9999px;
+            background-color: #FF6B6B;
+            border: 3px solid #FFD166;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-[#073B4C] mb-4">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</h1>
+            <p class="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto">
+               (STEM سنة تالتة)
+            </p>
+        </header>
+
+        <main class="space-y-12">
+            
+            <section class="bg-gradient-to-br from-[#118AB2] to-[#06D6A0] text-white rounded-3xl shadow-2xl p-8 md:p-10 text-center border-b-8 border-[#073B4C]">
+                <h2 class="text-3xl font-bold text-white mb-3">إجمالي ساعات المذاكرة الأسبوعية</h2>
+                <p class="text-8xl md:text-9xl font-black text-[#FFD166] my-6 drop-shadow-lg">64.5</p>
+                <p class="text-xl text-white opacity-90">ساعة من الجد والتركيز لتحقيق هدفك (بالإضافة لـ 10.5 ساعة تمرين و 3.5 ساعة ورد يومي)</p>
+            </section>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border-t-4 border-[#FF6B6B]">
+                    <h3 class="text-2xl font-bold text-center text-[#073B4C] mb-4">توزيع المجهود على المواد</h3>
+                    <p class="text-center text-slate-500 mb-6">شوف وقتك هيتوزع إزاي على كل المواد عشان تضمن إن مفيش مادة تيجي على حساب التانية.</p>
+                    <div class="chart-container">
+                        <canvas id="subjectDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border-t-4 border-[#FFD166]">
+                    <h3 class="text-2xl font-bold text-center text-[#073B4C] mb-4">كثافة المذاكرة اليومية</h3>
+                     <p class="text-center text-slate-500 mb-6">مقارنة بين إجمالي ساعات المذاكرة كل يوم عشان تعرف امتى هتزود مجهودك.</p>
+                    <div class="chart-container">
+                        <canvas id="dailyHoursChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 lg:col-span-2 border-t-4 border-[#06D6A0]">
+                    <h3 class="text-2xl font-bold text-center text-[#073B4C] mb-4">أنواع أنشطة المذاكرة</h3>
+                    <p class="text-center text-slate-500 mb-6 max-w-2xl mx-auto">تحليل لكيفية قضاء وقت المذاكرة، من تعلم مفاهيم جديدة لحل التمارين والمراجعة، عشان تضمن استراتيجية متوازنة.</p>
+                    <div class="chart-container">
+                        <canvas id="activityTypeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border-t-4 border-[#06D6A0]">
+                <h3 class="text-3xl font-bold text-center text-[#073B4C] mb-8">الخطة اليومية التفصيلية</h3>
+                <p class="text-center text-slate-600 mb-6 max-w-2xl mx-auto">
+                    مواعيد الصلوات تقريبية، يرجى ضبطها حسب التوقيت المحلي لمدينتك.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#FF6B6B]">
+                        <h4 class="text-xl font-bold mb-4">السبت: يوم الرياضة والكيمياء</h4>
+                        <div class="space-y-4">
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>قبل 8 الصبح: صلاة الفجر + فطار خفيف</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8 الصبح - 11 الصبح: رياضة (درس جديد) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>11 الصبح - 1 الظهر: راحة / غداء / صلاة الظهر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>1 الظهر - 4 العصر: رياضة (حل تمارين) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>4 العصر - 5:30 العصر: تمرين - 1.5 ساعة + صلاة العصر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>5:30 العصر - 7 بالليل: راحة / أكل / صلاة المغرب</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>7 بالليل - 8:30 بالليل: تحضير SAT - 1.5 ساعة</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8:30 بالليل - 11:30 بالليل: كيمياء (مراجعة) - 3 ساعات + صلاة العشاء</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div>11:30 بالليل - 12 بالليل: الورد اليومي للقرآن - 0.5 ساعة</div></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#FFD166]">
+                        <h4 class="text-xl font-bold mb-4">الأحد: يوم الميكانيكا والألماني</h4>
+                        <div class="space-y-4">
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>قبل 8 الصبح: صلاة الفجر + فطار خفيف</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8 الصبح - 11 الصبح: ميكانيكا (درس جديد) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>11 الصبح - 1 الظهر: راحة / غداء / صلاة الظهر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>1 الظهر - 4 العصر: ميكانيكا (حل مسائل) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>4 العصر - 5:30 العصر: تمرين - 1.5 ساعة + صلاة العصر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>5:30 العصر - 7 بالليل: راحة / أكل / صلاة المغرب</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>7 بالليل - 8:30 بالليل: تحضير SAT - 1.5 ساعة</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8:30 بالليل - 10:30 بالليل: ألماني (قواعد وكلمات) - 2 ساعتين + صلاة العشاء</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div>10:30 بالليل - 11 بالليل: الورد اليومي للقرآن - 0.5 ساعة</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#06D6A0]">
+                        <h4 class="text-xl font-bold mb-4">الاثنين: يوم الكيمياء والرياضة</h4>
+                        <div class="space-y-4">
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>قبل 8 الصبح: صلاة الفجر + فطار خفيف</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8 الصبح - 11 الصبح: كيمياء (فصل جديد) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>11 الصبح - 1 الظهر: راحة / غداء / صلاة الظهر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>1 الظهر - 4 العصر: كيمياء (حل مسائل) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>4 العصر - 5:30 العصر: تمرين - 1.5 ساعة + صلاة العصر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>5:30 العصر - 7 بالليل: راحة / أكل / صلاة المغرب</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>7 بالليل - 8:30 بالليل: تحضير SAT - 1.5 ساعة</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8:30 بالليل - 11:30 بالليل: رياضة (مراجعة) - 3 ساعات + صلاة العشاء</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div>11:30 بالليل - 12 بالليل: الورد اليومي للقرآن - 0.5 ساعة</div></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#118AB2]">
+                        <h4 class="text-xl font-bold mb-4">الثلاثاء: يوم الميكانيكا والألماني</h4>
+                         <div class="space-y-4">
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>قبل 8 الصبح: صلاة الفجر + فطار خفيف</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8 الصبح - 11 الصبح: ميكانيكا (مراجعة/حل مسائل) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>11 الصبح - 1 الظهر: راحة / غداء / صلاة الظهر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>1 الظهر - 2:30 العصر: تحضير SAT - 1.5 ساعة</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>2:30 العصر - 4:30 العصر: ألماني (مراجعة/تدريبات) - 2 ساعتين</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>4:30 العصر - 6 العصر: تمرين - 1.5 ساعة + صلاة العصر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>6 العصر - 7:30 بالليل: راحة / أكل / صلاة المغرب</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>7:30 بالليل - 10:30 بالليل: مراجعة عامة (3 ساعات) + صلاة العشاء</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div>10:30 بالليل - 11 بالليل: الورد اليومي للقرآن - 0.5 ساعة</div></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#073B4C]">
+                        <h4 class="text-xl font-bold mb-4">الأربعاء: يوم الكيمياء والمراجعة المكثفة</h4>
+                         <div class="space-y-4">
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>قبل 8 الصبح: صلاة الفجر + فطار خفيف</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8 الصبح - 11 الصبح: كيمياء (مراجعة/مسائل صعبة) - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>11 الصبح - 1 الظهر: راحة / غداء / صلاة الظهر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>1 الظهر - 2:30 العصر: تحضير SAT - 1.5 ساعة</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>2:30 العصر - 5:30 العصر: مراجعة عامة (3 ساعات)</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>5:30 العصر - 7 بالليل: تمرين - 1.5 ساعة + صلاة العصر والمغرب</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>7 بالليل - 10 بالليل: رياضة (مراجعة/مسائل) - 3 ساعات + صلاة العشاء</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div>10 بالليل - 10:30 بالليل: الورد اليومي للقرآن - 0.5 ساعة</div></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border-l-8 border-[#FF6B6B]">
+                        <h4 class="text-xl font-bold mb-4">الخميس: يوم الامتحانات التجريبية</h4>
+                         <div class="space-y-4">
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>قبل 8 الصبح: صلاة الفجر + فطار خفيف</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8 الصبح - 12 الظهر: امتحان تجريبي (ميكانيكا أو كيمياء) - 4 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>12 الظهر - 1 الظهر: راحة / غداء / صلاة الظهر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>1 الظهر - 4 العصر: تصحيح الامتحان وتحليل الأخطاء - 3 ساعات</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>4 العصر - 5:30 العصر: تمرين - 1.5 ساعة + صلاة العصر</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>5:30 العصر - 7 بالليل: راحة / أكل / صلاة المغرب</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>7 بالليل - 8:30 بالليل: تحضير SAT - 1.5 ساعة</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div class="flow-line"></div><div>8:30 بالليل - 10:30 بالليل: ألماني (مراجعة سريعة) - 2 ساعتين + صلاة العشاء</div></div>
+                            <div class="flow-item"><span class="flow-dot"></span><div>10:30 بالليل - 11 بالليل: الورد اليومي للقرآن - 0.5 ساعة</div></div>
+                        </div>
+                    </div>
+
+                </div>
+                 <div class="mt-8 text-center bg-slate-100 text-slate-800 p-6 rounded-2xl md:col-span-2 lg:col-span-3 border-t-4 border-[#06D6A0]">
+                    <h4 class="text-2xl font-bold mb-2 text-[#073B4C]">الجمعة: يوم الراحة والمراجعة الخفيفة</h4>
+                    <ul class="list-disc pr-5 mt-4 text-lg text-right mx-auto max-w-xl">
+                        <li>قبل 9 الصبح: صلاة الفجر + فطار خفيف</li>
+                        <li>9 الصبح - 10:30 الصبح: تحضير SAT - 1.5 ساعة</li>
+                        <li>10:30 الصبح - 12:30 الظهر: مراجعة خفيفة لجميع المواد - 2 ساعتين</li>
+                        <li>12:30 الظهر - 2 الظهر: تمرين - 1.5 ساعة + صلاة الظهر</li>
+                        <li>2 الظهر - 2:30 الظهر: الورد اليومي للقرآن - 0.5 ساعة</li>
+                        <li>بقية اليوم: راحة تامة واستعداد للأسبوع الجديد.</li>
+                        <li>صلاة العصر، المغرب، العشاء: في أوقاتها المحددة خلال فترة الراحة.</li>
+                    </ul>
+                    <p class="text-lg mt-4">الراحة جزء أساسي من خطة النجاح عشان تجدد طاقتك وتفضل مركز.</p>
+                </div>
+            </section>
+            
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-slate-300">
+            <h3 class="text-3xl font-bold text-[#073B4C] mb-6">نصايح ذهبية للنجاح</h3>
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 text-slate-700">
+                <span class="bg-[#FFD166] font-semibold py-2 px-5 rounded-full shadow-sm">حل مسائل كتير</span>
+                <span class="bg-[#06D6A0] font-semibold py-2 px-5 rounded-full shadow-sm">افهم.. متتحفظش</span>
+                <span class="bg-[#FF6B6B] font-semibold py-2 px-5 rounded-full shadow-sm">خد وقتك في الراحة</span>
+                <span class="bg-[#118AB2] text-white font-semibold py-2 px-5 rounded-full shadow-sm">راجع أول بأول</span>
+            </div>
+            <p class="mt-8 text-slate-500 text-sm">وَأَن لَّيْسَ لِلإِنسَانِ إِلاَّ مَا سَعَى، وَأَنَّ سَعْيَهُ سَوْفَ يُرَى</p>
+        </footer>
+    </div>
+
+    <script>
+        const tooltipTitleCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const chartColors = ['#118AB2', '#06D6A0', '#FFD166', '#FF6B6B', '#073B4C', '#5A6A90', '#F78C6B', '#9C89B8'];
+        
+        function initSubjectDistributionChart() {
+            const ctx = document.getElementById('subjectDistributionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['الرياضة', 'الميكانيكا', 'الكيمياء', 'الألماني', 'تحضير SAT', 'مراجعة وتدريبات عامة'],
+                    datasets: [{
+                        label: 'توزيع الساعات',
+                        data: [12, 9, 9, 6, 10.5, 18], /* Updated data based on new subject distribution */
+                        backgroundColor: chartColors.slice(0, 6), /* Use only first 6 colors for 6 labels */
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                        hoverOffset: 15
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...tooltipTitleCallback,
+                    plugins: { ...tooltipTitleCallback.plugins, legend: { position: 'bottom', labels: { font: { family: "'Cairo', sans-serif", size: 12 } } } }
+                }
+            });
+        }
+
+        function initDailyHoursChart() {
+            const ctx = document.getElementById('dailyHoursChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'],
+                    datasets: [{
+                        label: 'إجمالي ساعات المذاكرة اليومية',
+                        data: [10.5, 9.5, 9.5, 9.5, 9.5, 9.5, 3.5], /* Adjusted for SAT prep and Quran time */
+                        backgroundColor: ['#FF6B6B', '#FFD166', '#06D6A0', '#118AB2', '#073B4C', '#FF6B6B', '#06D6A0'],
+                        borderRadius: 6,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...tooltipTitleCallback,
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'عدد الساعات', font: { family: "'Cairo', sans-serif" } }, ticks: { font: { family: "'Cairo', sans-serif" } } },
+                        x: { ticks: { font: { family: "'Cairo', sans-serif", size: 11 } } }
+                    },
+                    plugins: { ...tooltipTitleCallback.plugins, legend: { display: false } }
+                }
+            });
+        }
+        
+        function initActivityTypeChart() {
+            const ctx = document.getElementById('activityTypeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['تعلم مفاهيم جديدة', 'حل المسائل والتمارين', 'المراجعة وتثبيت المعلومات', 'التركيز على الصعوبات والامتحانات'],
+                    datasets: [{
+                        label: 'توزيع الأنشطة',
+                        data: [15, 18, 12, 5], /* Adjusted data to fit new total hours and reflect activities */
+                        backgroundColor: ['#004AAD', '#0085FF', '#87CEFA', '#C1E1FF'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    ...tooltipTitleCallback,
+                    plugins: {
+                        ...tooltipTitleCallback.plugins,
+                        legend: {
+                            position: 'bottom',
+                             labels: {
+                                font: {
+                                    family: "'Cairo', sans-serif",
+                                    size: 14
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initSubjectDistributionChart();
+            initDailyHoursChart();
+            initActivityTypeChart();
+            
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = document.getElementById(button.dataset.target);
+                    button.classList.toggle('active');
+
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
